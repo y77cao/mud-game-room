@@ -2,7 +2,9 @@ import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { SyncState } from "@latticexyz/network";
 import { useMUD } from "./MUDContext";
 import { HasValue } from "@latticexyz/recs";
-import { GameCenter } from "./GameCenter";
+import { GameCenter } from "./components/GameCenter";
+import styled from "styled-components";
+import { WaitingRoom } from "./WaitingRoom";
 
 export const App = () => {
   const {
@@ -25,26 +27,32 @@ export const App = () => {
     if (!roomEntity) {
       return <GameCenter />;
     } else if (playersInRoom < 4) {
-      return (
-        <div>
-          Waiting for other players to join ({playersInRoom}/4). Room Id:{" "}
-          {roomEntity}
-        </div>
-      );
+      return <WaitingRoom />;
     } else {
       return <GameBoard players={playersInRoom} />;
     }
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
+    <Container>
       {loadingState.state !== SyncState.LIVE ? (
-        <div>
+        <Loading>
           {loadingState.msg} ({Math.floor(loadingState.percentage)}%)
-        </div>
+        </Loading>
       ) : (
         render()
       )}
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #282c34;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Loading = styled.div``;
