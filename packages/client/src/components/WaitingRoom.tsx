@@ -45,13 +45,17 @@ export const WaitingRoom = ({ room }: { room: string }) => {
     <WaitingRoomContainer>
       <WindowHeader title="Waiting Room" onClose={leaveRoom} />
       <InnerContainer>
-        <Title>
-          Waiting for {Number(roomLimit) - players.length} player(s) start{" "}
-          {`Minecollector`}...
-        </Title>
-        <LoadingContainer>
-          <img src="src/public/loading.gif" width={60} height={60} />
-        </LoadingContainer>
+        {Number(roomLimit) - players.length > 0 ? (
+          <>
+            <Title>
+              Waiting for {Number(roomLimit) - players.length} player(s) start{" "}
+              {`Minecollector`}...
+            </Title>
+            <LoadingContainer>
+              <img src="src/public/loading.gif" width={60} height={60} />
+            </LoadingContainer>
+          </>
+        ) : null}
         <div>
           Game Address: <Address>{gameAddress}</Address>
         </div>
@@ -117,6 +121,10 @@ const Player = styled.div`
 
 const PlayersContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  & > * {
+    margin: 10px 0;
+  }
 `;
 
 const ButtonContainer = styled.div`

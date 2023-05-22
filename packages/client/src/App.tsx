@@ -1,7 +1,7 @@
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { SyncState } from "@latticexyz/network";
 import { useMUD } from "./MUDContext";
-import { Entity, HasValue, getComponentValueStrict } from "@latticexyz/recs";
+import { Entity, HasValue, getComponentValue } from "@latticexyz/recs";
 import { GameCenter } from "./components/GameCenter";
 import styled from "styled-components";
 import { WaitingRoom } from "./components/WaitingRoom";
@@ -29,10 +29,7 @@ export const App = () => {
     if (!roomEntity) {
       return <GameCenter />;
     } else {
-      const roomState = getComponentValueStrict(
-        State,
-        roomEntity as Entity
-      )?.value;
+      const roomState = getComponentValue(State, roomEntity as Entity)?.value;
       if (roomState === RoomState.PENDING) {
         return <WaitingRoom room={roomEntity} />;
       }

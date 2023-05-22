@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useMUD } from "../MUDContext";
 import {
   Has,
@@ -6,7 +6,8 @@ import {
   getComponentValueStrict,
   runQuery,
 } from "@latticexyz/recs";
-import { RoomState } from "../constants";
+import Gixi from "gixi";
+
 import { useEntityQuery } from "@latticexyz/react";
 import styled from "styled-components";
 import { StyledButton, StyledContainer } from "../globalStyles";
@@ -38,6 +39,19 @@ export const GameCenter = () => {
   const [roomId, setRoomId] = useState("");
   const [gameAddress, setGameAddress] = useState("");
   const [roomLimit, setRoomLimit] = useState(0);
+
+  const PendingRooms = memo(
+    function PendingRooms({ rooms }: { pendingRooms: unknown[] }) {
+      return (
+        <PendingRoomsContainer>
+          {pendingRooms.map((room, i) => {
+            return <PendingRoomCell key={i} {...room} joinRoom={joinRoom} />;
+          })}
+        </PendingRoomsContainer>
+      );
+    },
+    () => true
+  );
 
   return (
     <GameCenterContainer>
@@ -89,12 +103,7 @@ export const GameCenter = () => {
           Create a Room
         </StyledButton>
       </ButtonContainer>
-
-      <PendingRoomsContainer>
-        {pendingRooms.map((room, i) => {
-          return <PendingRoomCell key={i} {...room} joinRoom={joinRoom} />;
-        })}
-      </PendingRoomsContainer>
+      <PendingRooms rooms={pendingRooms} />
     </GameCenterContainer>
   );
 };

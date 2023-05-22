@@ -49,6 +49,6 @@ contract RoomSystem is System {
         bytes32 roomId = Room.get(player);
         require(roomId != bytes32(0), "player not in room");
 
-        Room.set(player, bytes32(0));
+        Room.deleteRecord(player);
     }
 }
