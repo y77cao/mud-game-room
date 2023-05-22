@@ -5,6 +5,8 @@ export type ClientComponents = ReturnType<typeof createClientComponents>;
 export function createClientComponents({ components }: SetupNetworkResult) {
   return {
     ...components,
-    // add your client components or overrides here
+    Room: components.Room,
+    State: components.State,
+    Game: components.Game,
   };
 }
