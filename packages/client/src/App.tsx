@@ -1,14 +1,16 @@
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { SyncState } from "@latticexyz/network";
 import { useMUD } from "./MUDContext";
-import { HasValue } from "@latticexyz/recs";
+import { Entity, HasValue, getComponentValueStrict } from "@latticexyz/recs";
 import { GameCenter } from "./components/GameCenter";
 import styled from "styled-components";
-import { WaitingRoom } from "./WaitingRoom";
+import { WaitingRoom } from "./components/WaitingRoom";
+import { RoomState } from "./constants";
+import { Game } from "./components/Game";
 
 export const App = () => {
   const {
-    components: { LoadingState, Room },
+    components: { LoadingState, Room, State },
     network: { playerEntity, singletonEntity },
   } = useMUD();
 
@@ -26,10 +28,16 @@ export const App = () => {
   const render = () => {
     if (!roomEntity) {
       return <GameCenter />;
-    } else if (playersInRoom < 4) {
-      return <WaitingRoom />;
     } else {
-      return <GameBoard players={playersInRoom} />;
+      const roomState = getComponentValueStrict(
+        State,
+        roomEntity as Entity
+      )?.value;
+      if (roomState === RoomState.PENDING) {
+        return <WaitingRoom room={roomEntity} />;
+      }
+
+      return <Game />;
     }
   };
 

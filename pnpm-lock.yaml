@@ -67,6 +67,9 @@ importers:
       ethers:
         specifier: ^5.7.2
         version: 5.7.2
+      gixi:
+        specifier: ^0.0.6
+        version: 0.0.6
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -3904,6 +3907,10 @@ packages:
       call-bind: 1.0.2
       get-intrinsic: 1.2.1
     dev: true
+
+  /gixi@0.0.6:
+    resolution: {integrity: sha512-r3JcFtedAu1N/sXAUMC+LLZkY7XM+aAJ5Tb8lls2zliEimjxX+xmBYhBJOVKNbJtWOmjwoBB+n6WE1rG4YO2MA==}
+    dev: false
 
   /glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}

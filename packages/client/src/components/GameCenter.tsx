@@ -11,6 +11,7 @@ import { useEntityQuery } from "@latticexyz/react";
 import styled from "styled-components";
 import { StyledButton, StyledContainer } from "../globalStyles";
 import { WindowHeader } from "./WindowHeader";
+import { PendingRoomCell } from "./PendingRoomCell";
 
 export const GameCenter = () => {
   const {
@@ -19,17 +20,18 @@ export const GameCenter = () => {
     systemCalls: { joinRoom, createRoom },
   } = useMUD();
 
-  const pendingRooms = useEntityQuery([
-    HasValue(State, { value: `${RoomState.PENDING}` }),
-  ]).map((entity) => {
-    const gameAddress = getComponentValueStrict(Game, entity)?.value;
-    const roomLimit = getComponentValueStrict(
-      RoomLimit,
-      entity
-    )?.value.toString();
-    const players = [...runQuery([HasValue(Room, { value: entity })])];
-    return { gameAddress, roomLimit, players };
-  });
+  const pendingRooms = useEntityQuery([HasValue(State, { value: `0x00` })]).map(
+    // 0x00 is RoomState.PENDING how do i do this?
+    (entity) => {
+      const gameAddress = getComponentValueStrict(Game, entity)?.value;
+      const roomLimit = getComponentValueStrict(
+        RoomLimit,
+        entity
+      )?.value?.toString();
+      const players = [...runQuery([HasValue(Room, { value: entity })])];
+      return { roomId: entity, gameAddress, roomLimit, players };
+    }
+  );
 
   const [showJoinRoomPopup, setShowJoinRoomPopup] = useState(false);
   const [showCreateRoomPopup, setShowCreateRoomPopup] = useState(false);
@@ -90,12 +92,7 @@ export const GameCenter = () => {
 
       <PendingRoomsContainer>
         {pendingRooms.map((room, i) => {
-          return (
-            <div key={i}>
-              Playing {room.gameAddress}, Players: {room.players.length} /{" "}
-              {room.roomLimit}
-            </div>
-          );
+          return <PendingRoomCell key={i} {...room} joinRoom={joinRoom} />;
         })}
       </PendingRoomsContainer>
     </GameCenterContainer>
@@ -122,24 +119,12 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-const PendingRoomsContainer = styled.div``;
-
-const Button = styled.button`
-  -webkit-border-radius: 12;
-  -moz-border-radius: 12;
-  border-radius: 8px;
-  color: #ffffff;
-  background: #00cf9f;
-  padding: 15px 25px 15px 25px;
-  text-decoration: none;
-  border: none;
-  text-transform: uppercase;
-  cursor: pointer;
-
-  &:hover {
-    background: #00b89f;
-    text-decoration: none;
-  }
+const PendingRoomsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  margin: 20px;
 `;
 
 const PopupContainer = styled(StyledContainer)`

@@ -1,5 +1,5 @@
 export enum RoomState {
-  PENDING = 0,
-  ACTIVE = 1,
-  ENDED = 2,
+  PENDING = "0x00",
+  ACTIVE = "0x01",
+  ENDED = "0x02",
 }
