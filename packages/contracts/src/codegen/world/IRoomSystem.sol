@@ -11,4 +11,6 @@ interface IRoomSystem {
   function startGame() external;
 
   function leaveRoom() external;
+
+  function getPlayers(bytes32 roomId) external view returns (bytes32[] memory);
 }

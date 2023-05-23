@@ -21,20 +21,17 @@ export const App = () => {
   });
 
   const roomEntity = useComponentValue(Room, playerEntity)?.value;
-  const playersInRoom = useEntityQuery([
-    HasValue(Room, { value: roomEntity }),
-  ]).length;
+  const roomState = useComponentValue(State, roomEntity as Entity)?.value;
 
   const render = () => {
-    if (!roomEntity) {
+    if (!roomEntity || !roomState) {
       return <GameCenter />;
     } else {
-      const roomState = getComponentValue(State, roomEntity as Entity)?.value;
       if (roomState === RoomState.PENDING) {
         return <WaitingRoom room={roomEntity} />;
       }
 
-      return <Game />;
+      return <Game room={roomEntity} />;
     }
   };
 

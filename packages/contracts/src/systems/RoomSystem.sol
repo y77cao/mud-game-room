@@ -51,4 +51,8 @@ contract RoomSystem is System {
 
         Room.deleteRecord(player);
     }
+
+    function getPlayers(bytes32 roomId) public view returns (bytes32[] memory) {
+        return getKeysWithValue(RoomTableId, Room.encode(roomId));
+    }
 }
